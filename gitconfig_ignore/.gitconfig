@@ -1,0 +1,11 @@
+[user]
+[alias]
+	co = checkout
+	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+[push]
+	default = simple
+[core]
+	excludesfile = /Users/jhamilton/.gitignore_global
+[credential]
+	helper = osxkeychain
+	useHttpPath = true

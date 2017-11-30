@@ -1,0 +1,1 @@
+/Users/jenniferhamilton/.zprezto/runcoms/zprofile

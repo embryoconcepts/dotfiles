@@ -1,0 +1,10 @@
+Wawa50thAnniversaryProject.xcodeproj/project.xcworkspace/xcuserdata/mobiquity.xcuserdatad/
+Wawa50thAnniversaryProject.xcodeproj/xcuserdata/mobiquity.xcuserdatad/
+Wawa50thAnniversaryProject.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserdatad
+/.DS_Store
+.DS_Store
+*.orig
+build/
+/Wawa50thAnniversaryProject/DerivedData
+/Wawa50thAnniversaryProject/Pods/Target Support Files/Pods-Wawa50thAnniversaryProjectUITests

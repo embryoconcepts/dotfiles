@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>TopLevel</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>enum ClassFile: String {
+    case NotesFile = "Notes.dat"
+}
+
+class PersistenceManager {
+    
+    static let sharedInstance: PersistenceManager = {
+        let manager = PersistenceManager()
+        return manager
+    }()
+    
+    private func dataFileString(classFile: ClassFile) -&gt; String {
+        guard let directoryPath = self.privateDocumentsDirectory() else {
+            fatalError("Cannot fine private documents directory")
+        }
+        
+        return directoryPath + "/\(classFile.rawValue)"
+    }
+    
+    internal func privateDocumentsDirectory() -&gt; String? {
+        let libraryUrl = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true)
+        let privateDocPath = (libraryUrl[0] as NSString).stringByAppendingPathComponent("PrivateDocuments")
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(privateDocPath) {
+            let attributes = [NSFileProtectionKey:NSFileProtectionComplete]
+            guard let _ = try? NSFileManager.defaultManager().createDirectoryAtPath(privateDocPath, withIntermediateDirectories: true, attributes: attributes) else {
+                return nil
+            }
+        }
+        return  privateDocPath
+    }
+    
+    internal func saveObject(object: AnyObject, toFile file: ClassFile) -&gt; NSError? {
+        let saveSuccessful = NSKeyedArchiver.archiveRootObject(object, toFile: self.dataFileString(file))
+        if !saveSuccessful {
+            return NSError(domain: "notesApp", code: -3003, userInfo: [NSLocalizedDescriptionKey: "Cannot write to file."])
+        } else {
+            return nil
+        }
+    }
+    
+    internal func retrieveObject(fromFile file: ClassFile) -&gt; Result&lt;AnyObject&gt; {
+        guard let retrieveData = NSData(contentsOfFile: self.dataFileString(file)) else {
+            return .Error(NSError(domain: "notesApp", code: -3001, userInfo: [NSLocalizedDescriptionKey:"Cannot open file."]))
+        }
+        return .Success(NSKeyedUnarchiver.unarchiveObjectWithData(retrieveData))
+    }
+    
+    internal func deleteDataFile(file: ClassFile) -&gt; NSError? {
+        let fileExists = NSFileManager.defaultManager().fileExistsAtPath(dataFileString(file))
+        if fileExists {
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(dataFileString(file))
+                return nil
+            } catch let error as NSError {
+                print(error.localizedDescription)
+                return error
+            }
+        } else {
+            return nil
+        }
+    }
+}
+
+
+extension PersistenceManager {
+    
+    // saving notes
+    func saveNotes(notes: [Note]) -&gt; NSError? {
+        let result = self.saveObject(notes, toFile: .NotesFile)
+        return result
+    }
+    
+    //reading notes
+    func loadNotes() -&gt; Result&lt;AnyObject&gt;? {
+        return retrieveObject(fromFile: .NotesFile)
+    }
+}</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>700F77CC-2BC8-4B6E-A564-2D75B343A92A</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>PersistenceManager</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
