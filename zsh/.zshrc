@@ -11,7 +11,7 @@ fi
 # - Powerlevel9k theme configuration
 # - - Prompts
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon root_indicator dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status rbenv nvm time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 
 # - - dir
